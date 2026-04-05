@@ -175,9 +175,12 @@ test('datepicker', async ({page}) => {
     const expectedYear = date.getFullYear()
     const dateToAssert = `${expectedMonthShort} ${expectedDate}, ${expectedYear}`
 
+    const calendarViewMode = page.locator('nb-calendar-view-mode')
+    await expect(calendarViewMode).toBeVisible()
+
     let calendarMonthAndYear = await page.locator('nb-calendar-view-mode').textContent()
     const expectedMonthAndYear = ` ${expectedMonthLong} ${expectedYear} ` 
-    while(!calendarMonthAndYear.includes(expectedMonthAndYear)) {
+    while(calendarMonthAndYear != expectedMonthAndYear) {
         await page.locator('nb-calendar-pageable-navigation [data-name="chevron-right"]').click()
         calendarMonthAndYear = await page.locator('nb-calendar-view-mode').textContent()
     }
@@ -200,6 +203,9 @@ test(('sliders'), async ({page}) => {
     await tempBox.scrollIntoViewIfNeeded()
 
     const box = await tempBox.boundingBox()
+    if (!box) {
+    throw new Error('Temperature slider boundingBox is null');
+  }
     const x = box.x + box.width / 2
     const y = box.y + box.height / 2
     await page.mouse.move(x, y)
