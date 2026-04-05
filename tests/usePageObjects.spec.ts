@@ -32,3 +32,9 @@ test('parameterized methods', async ({page}) => {
     await pm.onDatePickerPage().selectCommonDatePickerDateFromTo(7)
     await pm.onDatePickerPage().selectDatePickerWithRangeFromToday(6, 15)
 })
+
+test.only('testing with argi ci', async ({page}) => {
+    const pm = new PageManager(page)
+    await pm.navigateTo().formLayoutsPage()
+    await pm.navigateTo().datePickerPage()
+})
